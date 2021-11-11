@@ -1,0 +1,15 @@
+# https://taskfile.dev
+
+version: '3'
+
+vars:
+  DOCKER_IMAGE_NAME: chainsafe/devops
+
+tasks:
+  docker:build:
+    cmds:
+      - docker build -t {{ .DOCKER_IMAGE_NAME }} .
+
+  docker:run:
+    cmds:
+      - docker run -p 8080:8080 {{ .DOCKER_IMAGE_NAME }}:latest
