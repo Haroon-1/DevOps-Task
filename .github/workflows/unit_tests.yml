@@ -22,7 +22,9 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so the job can access it
       - uses: actions/checkout@v2
-      - run:
+      
+      - name: commands
+        run: |
           pwd
           ls
 
