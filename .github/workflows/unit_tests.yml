@@ -27,11 +27,9 @@ jobs:
       - name: Install Task
         uses: arduino/setup-task@v1
 
-      # Runs multiple commands
+      # Move to app folder
       - name: commands
-        run: |
-          pwd 
-          ls
+        run: cd app
 
       # Runs a docker app on port 8080
       - name: Run Docker image
