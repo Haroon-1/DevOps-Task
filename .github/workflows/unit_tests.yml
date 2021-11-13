@@ -32,7 +32,7 @@ jobs:
 
       # Runs a docker app on port 8080
       - name: Run Docker image
-        run: task docker:run
+      - run: task docker:run
         
       # Runs the npm tests
       - name: Run npm tests
