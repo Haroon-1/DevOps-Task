@@ -22,18 +22,20 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so the job can access it
       - uses: actions/checkout@v2
-      - name: commands
-        run: |
-          pwd 
-          ls
 
       # Installs Task binary
       - name: Install Task
         uses: arduino/setup-task@v1
 
+      # Runs multiple commands
+      - name: commands
+        run: |
+          pwd 
+          ls
+
       # Runs a docker app on port 8080
       - name: Run Docker image
-      - run: task docker:run
+        run: task docker:run
         
       # Runs the npm tests
       - name: Run npm tests
