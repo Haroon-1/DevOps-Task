@@ -27,13 +27,11 @@ jobs:
       - name: Install Task
         uses: arduino/setup-task@v1
 
-      # Move to app folder
-      - name: commands
-        run: cd app
-
       # Runs a docker app on port 8080
-      - name: Run Docker image
-        run: task docker:run
+      - name: Run the Docker app
+        run: |
+          cd app
+          task docker:run
         
       # Runs the npm tests
       - name: Run npm tests
