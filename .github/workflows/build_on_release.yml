@@ -1,6 +1,6 @@
-# This is a workflow to build and push the Docker app once PR is merged.
+# This is a workflow to build and push the Docker app once a new release is published.
 
-name: Docker deploy to main
+name: Docker deploy to release
 
 # Controls when the workflow will run
 on:
