@@ -5,9 +5,11 @@ name: Unit Tests
 # Controls when the workflow will run
 on:
   # Triggers the workflow when a pull request is created but only for the master branch
-  pull_request:
+  # pull_request:
+  #   branches: [ main ]
+  #   types: [opened, reopened]
+  push:
     branches: [ main ]
-    types: [opened, reopened]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
