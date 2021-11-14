@@ -44,4 +44,5 @@ jobs:
       # Builds the docker app and pushes to registry
       - name: Build and push the Docker app
         run: |
+          cd app
           task docker:build-to-main
