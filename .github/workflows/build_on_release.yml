@@ -4,10 +4,11 @@ name: Docker deploy to main
 
 # Controls when the workflow will run
 on:
-  # Triggers the workflow when a pull request is merged
-  pull_request:
-    branches: [ main ]
-    types: [closed]
+  # Triggers the workflow when a release is published
+  release:
+    types: [published]
+    branches-ignore:
+      - main
 
 
   # Allows you to run this workflow manually from the Actions tab
@@ -40,8 +41,15 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
           logout: false
 
+      - name: Docker Metadata action
+        id: metadata
+        uses: docker/metadata-action@v3.6.0
+        with:
+          # List of Docker images to use as base name for tags
+          images: haroondogar/devopstask 
+
       # Builds the docker app and pushes to registry
       - name: Build and push the Docker app
         run: |
           cd app
-          task docker:build-to-main
+          task docker:build-to-release -- ${{ steps.metadata.outputs.tags }}
