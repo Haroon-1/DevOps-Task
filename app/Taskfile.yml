@@ -9,7 +9,11 @@ tasks:
   docker:build:
     cmds:
       - docker build -t {{ .DOCKER_IMAGE_NAME }} .
+  docker:build-to-main:
+    cmds:
+      - docker build -t {{ .DOCKER_IMAGE_NAME }}:main .
+      - docker push {{ .DOCKER_IMAGE_NAME }}:main
 
   docker:run:
     cmds:
-      - docker run -d -p 8080:8080 {{ .DOCKER_IMAGE_NAME }}:latest
+      - docker run -p 8080:8080 {{ .DOCKER_IMAGE_NAME }}:latest

@@ -1,15 +1,13 @@
-# This is a Unit Test workflow for Pull Requests.
+# This is a workflow to build and push the Docker app once PR is merged.
 
-name: Unit Tests
+name: Docker deploy to main
 
 # Controls when the workflow will run
 on:
-  # Triggers the workflow when a pull request is created but only for the master branch
-  # pull_request:
-  #   branches: [ main ]
-  #   types: [opened, reopened]
-  push:
+  # Triggers the workflow when a pull request is merged
+  pull_request:
     branches: [ main ]
+    types: [closed]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -17,6 +15,7 @@ on:
 jobs:
   # This workflow contains a single job called "build"
   build:
+    if: github.event.pull_request.merged == 'true'
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
@@ -25,28 +24,23 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so the job can access it
       - uses: actions/checkout@v2
 
-      # # Installs Task binary
-      # - name: Install Task
-      #   uses: arduino/setup-task@v1
+      # Installs Task binary
+      - name: Install Task
+        uses: arduino/setup-task@v1
 
-      # - name: Docker Login
-      #   uses: docker/login-action@v1.10.0
-      #   with:
-      #     # Server address of Docker registry. If not set then will default to Docker Hub
-      #     # registry: # optional
-      #     # Username used to log against the Docker registry
-      #     username: ${{ secrets.DOCKER_USERNAME }}
-      #     # Password or persnal access token used to log against the Docker registry
-      #     password: ${{ secrets.DOCKER_PASSWORD }}
-      #     logout: false
+      - name: Docker Login
+        uses: docker/login-action@v1.10.0
+        with:
+          # Server address of Docker registry. If not set then will default to Docker Hub
+          # registry: # optional
+          # Username used to log against the Docker registry
+          username: ${{ secrets.DOCKER_USERNAME }}
+          # Password or persnal access token used to log against the Docker registry
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          logout: false
 
-      # Runs a docker app on port 8080
-      - name: Run the npm tests
+      # Builds the docker app and pushes to registry
+      - name: Build and push the Docker app
         run: |
           cd app
-          npm install
-          npm test
-        
-      # # Runs the npm tests
-      # - name: Run npm tests
-      #   run: npm test
+          task docker:build-to-main:
