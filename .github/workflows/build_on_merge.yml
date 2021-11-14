@@ -5,9 +5,11 @@ name: Docker deploy to main
 # Controls when the workflow will run
 on:
   # Triggers the workflow when a pull request is merged
-  pull_request:
-    branches: [ main ]
-    types: [closed]
+  # pull_request:
+  #   branches: [ main ]
+  #   types: [closed]
+  push:
+    branches: [main]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -15,7 +17,7 @@ on:
 jobs:
   # This workflow contains a single job called "build"
   build:
-    if: github.event.pull_request.merged == 'true'
+    # if: github.event.pull_request.merged == 'true'
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
