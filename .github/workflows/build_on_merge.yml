@@ -45,4 +45,4 @@ jobs:
       - name: Build and push the Docker app
         run: |
           cd app
-          task docker:build-to-main:
+          task docker:build-to-main
