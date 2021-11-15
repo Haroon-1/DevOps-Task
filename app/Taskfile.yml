@@ -1,7 +1,6 @@
 # https://taskfile.dev
 
 version: '3'
-
 vars:
   DOCKER_IMAGE_NAME: haroondogar/devopstask
   RELEASE_TAG: {{.CLI_ARGS}}

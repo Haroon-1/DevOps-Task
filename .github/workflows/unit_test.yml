@@ -22,4 +22,5 @@ jobs:
       - name: Run the npm test
         run: |
           cd app
+          npm install
           npm test
