@@ -22,6 +22,6 @@ jobs:
         uses: actions/labeler@v3
         with:
           # The GITHUB_TOKEN secret
-          repo-token: # optional
+          repo-token: "${{ secrets.GITHUB_TOKEN }}"
           # The path for the label configurations
-          configuration-path: .github/labeler.json
+          configuration-path: .github/labeler.yml
