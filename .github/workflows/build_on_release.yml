@@ -4,11 +4,11 @@ name: Docker deploy to release
 
 # Controls when the workflow will run
 on:
-  # Triggers the workflow when a release is published
+  # Triggers the workflow when a release is published on all branches except main 
   release:
     types: [published]
     branches-ignore:
-      - main
+    - main
 
 
   # Allows you to run this workflow manually from the Actions tab
@@ -17,7 +17,6 @@ on:
 jobs:
   # This workflow contains a single job called "build"
   build:
-    if: github.event.pull_request.merged == 'true'
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
@@ -39,17 +38,11 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           # Password or personal access token used to log against the Docker registry
           password: ${{ secrets.DOCKER_PASSWORD }}
+          # Keeps the Docker login active until the last step
           logout: false
-
-      - name: Docker Metadata action
-        id: metadata
-        uses: docker/metadata-action@v3.6.0
-        with:
-          # List of Docker images to use as base name for tags
-          images: haroondogar/devopstask 
 
       # Builds the docker app and pushes to registry
       - name: Build and push the Docker app
         run: |
           cd app
-          task docker:build-to-release -- ${{ steps.metadata.outputs.tags }}
+          task docker:build-to-release -- ${{ github.event.release.tag_name }}
