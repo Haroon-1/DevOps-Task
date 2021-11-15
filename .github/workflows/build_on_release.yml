@@ -51,4 +51,4 @@ jobs:
       - name: Build and push the Docker app
         run: |
           cd app
-          task docker:build-to-release -- ${{ steps.metadata.outputs.args.DOCKER_META_VERSION }}
+          task docker:build-to-release -- ${{ steps.metadata.outputs.labels.org.opencontainers.image.version }}
