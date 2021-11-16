@@ -1,59 +1,20 @@
-# Welcome!
+# Attempt at the DevOps-Task!
 
 Hello,
 
-We are very happy that you have reached this point in the process.
-
-We believe that you will enjoy this test very much, we are very sure that it is very
-different from others you might have made in the past, just as we are at ChainSafe :)
+I quite enjoyed this task. I appreciate the time and effort spent to create this.
 
 ## Introduction
 
-We at ChainSafe always look for alternatives to automate our processes as much as possible.
+I identified there's 4 tasks to be done. For Docker login variables, I used Github Secrets and passed 
+them in as part of Actions. There are two secrets to be saved if forking this repo to test it out for
+yourself. They're DOCKER_USERNAME and DOCKER_PASSWORD. I've also set the DOCKER_IMAGE_NAME variable in
+Taskfile.yml to point to my dockerhub repo. This would also be required to set as your own image registry
+repo prior to testing this Task submission. 
 
-Being a decentralized development team located in different parts of the world, 
-we understand the need to automate processes that allows us a better way to manage a project.
 
-Our projects are mostly based on a microservices architecture, where different teams work under 
-their own methodologies within the same repository.
 
-## Getting Start
-
-Please, create a repository and place this source code into it, when you finish this practice, 
-feel free to send us your repository url so we can take a look and start the review process.
-
-## Application Details
-
-Take a look at the README in the `app` folder.
-
-## Notes to take into consideration first
-
-### `scripting`
-
-Use [Taskfile](https://taskfile.dev/#/) to create scripts, in our opinion is better than Makefile
-since it makes easy to read and understand.
-
-### `documentation`
-
-Use [Markdown](https://guides.github.com/features/mastering-markdown/), you can edit the README.md
-file or create a new one if you want/require.
-
-### `configuration`
-
-Use [YAML](https://yaml.org/) if you want to use a configuration file. 
-Easy to read and understand.
-
-## Tasks
-
-We want to integrate a CI / CD service to be able to carry out scripts depending on the events 
-that occur in our repository.
-
-You are free to choose the service you want, however, we recommend GitHub Actions 
-as it is our main provider.
-
-Please work on the following assignments ordered by priority.
-
-### When a Pull Request is created - Run unit testing - `required`
+## Task - 1 - When a Pull Request is created - Run unit testing - `required`
 
 As you may read in the `app` documentation, we have a script in the project application to run 
 unit testing by running the following command.
@@ -65,12 +26,32 @@ npm test
 The Pull Request requires this workflow to be successfully passed in order to merged into the 
 `main` branch.
 
-### When a Pull Request is merged - Deploy a docker image under the `main` tag - `required`
+### Task - 1 - Resolution
+
+The resolution to this resides at .github/workflows/unit_test.yml. I ensured prior to running
+the npm test, the step runs inside the app folder and prior to running npm testinstalls requirements
+using npm install.
+
+
+
+## Task - 2 - When a Pull Request is merged - Deploy a docker image under the `main` tag - `required`
 
 If a Pull Request has been merged into the `main` branch, we would like to create/update a 
 docker image under the tag `main`, e.g: `chainsafe/devops:main`.
 
-### When a new Release is published - Deploy a docker image with the tag created - `required`
+### Task - 2 - Resolution
+
+-- The resolution to this resides at .github/workflows/build_on_merge.yml. The trigger is on type=closed 
+but I've added the logic under the build to check if the PR wasn't closed without merging. 
+
+-- For the Taskfile script to run, I added a step of Task installation as well as a step for Docker login. 
+
+-- Finally a step that runs the task of docker:build-to-main, which is a task i created in Taskfile.yml 
+that tags the image as 'main' and builds as well as pushes to the repository.
+
+
+
+## Task - 3 - When a new Release is published - Deploy a docker image with the tag created - `required`
 
 We want to use the [Release feature](https://github.com/ChainSafe/devops-assessments/releases/new)
 to create new tags. We want this tag to follow [semver](https://semver.org) convention.
@@ -88,7 +69,20 @@ Finally, please take into consideration this workflow should NOT be triggered if
 been targeted in the `main` branch, since we don't want to conflict this workflow with the one 
 we previously indicated in the first task.
 
-### When a new Pull Request is created - Set the right team label - `optional`
+### Task - 3 - Resolution
+
+-- The resolution to this resides at .github/workflows/build_on_release.yml. The trigger is on type=published 
+whilst ignoring releases published to main branch. 
+
+-- For the Taskfile script to run, I added a step of Task installation as well as a step for Docker login. 
+
+-- Finally a step that runs the task of docker:build-to-release that passes in the release tag as CLI_ARGS 
+to the task command. The task I created for this builds a docker image and pushes to registry using the CLI_ARGS
+as the release tag.
+
+
+
+## Task - 4 - When a new Pull Request is created - Set the right team label - `optional`
 
 The use of monorepos tends to make difficult to track the tasks that belong to each team.
 
@@ -112,33 +106,13 @@ the proper label depending of the following cases:
 `team: devops`: Assign this label if the file `app/Dockerfile` or `app/Taskfile.yml` has been
 changed
 
-## FAQ
+### Task - 4 - Resolution
 
-#### `Can I store my own secrets on this repository?`
+-- The resolution to this resides in .github/workflows/ with 4 yml files for labeler actions. The trigger
+is when a PR is created and on the paths listed on the task above. 
 
-This repo is yours, you are the owner and can configure it in the way that you desire.
-After your test, this repository will be permanently deleted, feel free to store any secrets in
-the repository settings.
-
-#### `There are tasks that require to deploy a docker image, where can I do that?`
-
-Feel free to use the service that you want, this is part of the review, we would like you to take
-ownership of this task and perform the best and secure way to establish a communication between
-GitHub and your chosen Docker image repository.
-
-#### `There are tasks that require me to change the folder structure, can I do that?`
-
-Sure, feel free to change the repository folder structure in the way that you desire. 
-
-## Review
-
-Part of the things we will review are the following:
-
-- `security`: we want you to make sure to use rightly secrets and any other particular value
-- `clarity`: we want you to make sure to create a clear workflow per indication, instead of 
-combing everything in a single file that makes everything hard to read
-- `documentation`: please try to document all the things you are doing as possible
-- `etc`: feel free to impress us with things you usually do in your projects, we want to know the 
-way you work
-
-
+-- The trouble I had with this task is the inability to use the more obvious github action called the actions/labeler.
+This takes in a configuration yml file that can take as many labels to paths as required. The team: qa is a 
+particular format that in itself is a key:value pair. In Yaml files the first element cannot be defined in a 
+quoted format. This made it quite impossible to pass in the labels in a more easier way. I'm sure, if its given
+more time a resolution could be achieved
