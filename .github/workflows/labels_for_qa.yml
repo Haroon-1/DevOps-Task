@@ -1,16 +1,16 @@
-# This is a labeler workflow for Pull Requests.
+# This is a qa labeler workflow for Pull Requests.
 
 name: labeler for qa
 
 on:
-  # Triggers the workflow when a pull request is created but only for the master branch
+  # Triggers the workflow when a pull request is created for changes in path app/src
   pull_request:
     branches: [ main ]
     types: [opened, reopened]
     paths:
     - app/src
 jobs:
-  # This workflow contains a single job called "build"
+  # This workflow contains a single job called "label_pr"
   label_pr:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
