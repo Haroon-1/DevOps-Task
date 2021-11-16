@@ -9,7 +9,7 @@ I quite enjoyed this task. I appreciate the time and effort spent to create this
 I identified there's 4 tasks to be done. For Docker login variables, I used Github Secrets and passed 
 them in as part of Actions. There are two secrets to be saved if forking this repo to test it out for
 yourself. They're DOCKER_USERNAME and DOCKER_PASSWORD. I've also set the DOCKER_IMAGE_NAME variable in
-Taskfile.yml to point to my dockerhub repo. This would also be required to set as your own image registry
+app/Taskfile.yml to point to my dockerhub repo. This would also be required to set as your own image registry
 repo prior to testing this Task submission. 
 
 
@@ -46,7 +46,7 @@ but I've added the logic under the build to check if the PR wasn't closed withou
 
 -- For the Taskfile script to run, I added a step of Task installation as well as a step for Docker login. 
 
--- Finally a step that runs the task of docker:build-to-main, which is a task i created in Taskfile.yml 
+-- Finally a step that runs the task of docker:build-to-main, which is a task i created in app/Taskfile.yml 
 that tags the image as 'main' and builds as well as pushes to the repository.
 
 
