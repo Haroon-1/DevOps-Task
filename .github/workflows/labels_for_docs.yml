@@ -1,6 +1,6 @@
 # This is a labeler workflow for Pull Requests.
 
-name: labeler
+name: labeler for docs
 
 on:
   # Triggers the workflow when a pull request is created but only for the master branch
