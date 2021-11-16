@@ -1,0 +1,28 @@
+# This is a labeler workflow for Pull Requests.
+
+name: labeler for backend
+
+on:
+  # Triggers the workflow when a pull request is created but only for the master branch
+  pull_request:
+    branches: [ main ]
+    types: [opened, reopened]
+    paths:
+    - app/tests
+jobs:
+  # This workflow contains a single job called "build"
+  label_pr:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so the job can access it
+
+      - name: Label PR
+        uses: andymckay/labeler@master
+        with:
+          # The GITHUB_TOKEN secret
+          repo-token: "${{ secrets.GITHUB_TOKEN }}"
+          # labels
+          add-labels: "team: qa"
